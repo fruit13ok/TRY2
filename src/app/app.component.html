@@ -1,5 +1,5 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
+<!-- <div style="text-align:center">
   <h1>
     Welcome to {{ title }}!
   </h1>
@@ -16,5 +16,56 @@
   <li>
     <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
   </li>
-</ul>
+</ul> -->
 
+<h1>angular</h1>
+<courses></courses>
+<app-course></app-course>
+<app-authors></app-authors>
+<!-- <app-favorite></app-favorite> -->
+<br>
+<app-titlecase></app-titlecase>
+<div>
+  <p>parent has value: {{myisFavorite}}</p>
+  <p>value from child:</p>
+</div>
+<div>
+  <!-- property binding to pass data from parent to child, 
+    on this left of = is variable in child component, 
+    on the right of = is variable in this parent / current component,
+    $event holds the event object like the event object in DOM -->
+  <app-favorite [alias-isFavorite]='myisFavorite' (alias-change)="onFavoriteChange($event)"></app-favorite>
+</div>
+<app-panel>
+  <!-- <div class="headerContent">inject header content from parent to child</div> -->
+  <ng-container class="headerContent">inject header content from parent to child</ng-container>
+  <div class="bodyContent">
+      <h3>inject body content</h3>
+			<p>from parent to child</p>
+  </div>
+</app-panel>
+
+<app-like
+  [likesCount]="tweet.likesCount" 
+  [isActive]="tweet.isLiked"
+>
+</app-like>
+<app-directives></app-directives>
+
+<app-zippy title="Shipping Details Title">
+  Shipping Details Content
+</app-zippy>
+
+<app-contact-form></app-contact-form>
+
+<app-new-course-form></app-new-course-form>
+
+<signup-form></signup-form>
+
+<app-new-course-form2></app-new-course-form2>
+
+<app-new-course-form3></app-new-course-form3>
+
+<app-change-password></app-change-password>
+
+<app-posts></app-posts>

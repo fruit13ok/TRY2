@@ -1,0 +1,29 @@
+<!-- create input with keyup event for enter key, pass input value use template variable #topic-->
+<!-- create ul with bootstrap classes to display the array -->
+<!-- we can access topic with AbstractControl get() in html, -->
+<!-- use AbstractControl get() ".control" to return all the controls -->
+<!-- also apply refactor for long form.get('topics') code -->
+<!-- implement removeTopic(), pass in HTMLInputElement "topic" become FormControl object -->
+<form >
+    <input 
+        type="text" 
+        class="form-control"
+        #topic
+        (keyup.enter)="addTopic(topic)"
+    >
+    <ul class="list-group">
+        <!-- <li 
+            *ngFor="let topic of form.get('topics').controls"
+            class="list-group-item"
+        >
+            {{ topic.value }}
+        </li> -->
+        <li 
+            *ngFor="let topic of topics.controls"
+            class="list-group-item"
+            (click)="removeTopic(topic)"
+        >
+            {{ topic.value }}
+        </li>
+    </ul>
+</form>

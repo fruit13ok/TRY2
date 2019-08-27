@@ -1,0 +1,90 @@
+<!-- ngForm direcrive Creates a top-level FormGroup instance and binds it to a form to track aggregate form value and validation status, use template variable to define ngForm, -->
+<!-- ngForm has ngSubmit to bind event method pass in ngForm FormGroup instance to component, after click submit log out form input value and other interaction -->
+<form #f="ngForm" (ngSubmit)="submit(f)">
+    <!-- to group ngModel input fields, wrap them in div with ngModelGroup directive, so in DOM will see in subtree structure -->
+    <!-- it can use template variable too, good for validate a group of input -->
+    <div ngModelGroup="contact" #contact="ngModelGroup">
+        <div *ngIf="!contact.valid">... all validations of this group ...</div>
+        <!-- bootstrap's requirement, form needs to wrap in div with form-group class, 
+        means group of control in a form -->
+        <div class="form-group">
+            <!-- label's for attribute when clicked will focus on input -->
+            <label for="firstName">First Name</label>
+            <!-- each input need control object help us validate form -->
+            <!-- should use ngModel with 2 way binding to a field in component, but now start from basic -->
+            <!-- <input [(ngModel)]="firstName" name="firstName" id="firstName" type="text" class="form-control"> -->
+            <!-- ngModel need name attribute to identify each input -->
+            <!-- to pass input value to component use template reference variable, apply ngModel to template reference variable to pass along all the action of this input field to component -->
+            <!-- now run it, after input, see inspect, there is object NgModel, NgModel.control is the FormControl -->
+            <!-- some built-in validation "minlength" value store in requiredLength variable, "maxlength" when reach character size can no longer enter, no error shows, "pattern" takes regular expression -->
+            <input 
+                required 
+                minlength="3" 
+                maxlength="10" 
+                pattern="banana" 
+                ngModel 
+                name="firstName" 
+                #firstName="ngModel" 
+                (change)="log(firstName)" 
+                id="firstName" 
+                type="text" 
+                class="form-control"
+            >
+            <!-- use required error validation, add a div for display validation error, style with bootstrap -->
+            <!-- use *ngIf directive to check input field's template variable if input field clicked on, and no valid input -->
+            <!-- now run it, click the input field and click out, the error message will show, enter something in input, click out, will not show error message -->
+            <!-- for multiple validations error, create separate div for each error -->
+            <!-- now run it, shows multiple error -->
+            <div class="alert alert-danger" *ngIf="firstName.touched && !firstName.valid">
+                <div *ngIf="firstName.errors.required">
+                    First name is require
+                </div>
+                <div *ngIf="firstName.errors.minlength">
+                    First name should be minimum {{ firstName.errors.minlength.requiredLength }} characters
+                </div>
+                <div *ngIf="firstName.errors.pattern">
+                    First name doesn't match the pattern
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="comment">Comment</label>
+        <textarea ngModel name="comment" id="comment" cols="30" rows="10" class="form-control"></textarea>
+    </div>
+    <!-- bootstrap checkbox needs class checkbox, also need ngModel and name, -->
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ngModel name="isSubscribed"> Subscribe to mailing list
+        </label>
+    </div>
+    <!-- Drop-down Lists need class form-group, select need ngModel, name, id, and class form-control, multiple for select more by hold shift -->
+    <div class="form-group">
+        <label for="contactMethod">Contact Method</label>
+        <select multiple ngModel name="contactMethod" id="contactMethod" class="form-control">
+            <!-- populate option dynamically from component contactMethods array of objects, -->
+            <!-- bind value property to an item in array, -->
+            <!-- add default selected empty option, -->
+            <option value=""></option>
+            <!-- html value is string type, angular can bind the object type use ngValue, -->
+            <!-- good for debug when requesting data as object or function, but not often use, -->
+            <!-- <option *ngFor="let method of contactMethods" [value]="method.id">{{ method.name }}</option> -->
+            <option *ngFor="let method of contactMethods" [ngValue]="method">{{ method.name }}</option>
+        </select>
+    </div>
+    <!-- bootstrap need radio class, radio button need ngModel, group with name contactMethod, and value to identify it, -->
+    <!-- to generate dynamically from component array use *ngFor -->
+    <div *ngFor="let method of contactMethods" class="radio">
+        <label for="">
+            <input ngModel type="radio" name="contactMethod" [value]="method.id">
+            {{ method.name }}
+        </label>
+    </div>
+    <p>
+        <!-- good way for debug, display form's value just below your form, -->
+        <!-- JSON object of our form's value, to show data use pipe json to format to JSON data -->
+        {{ f.value | json}}
+    </p>
+    <!-- to disable the button with condition use property bind to bind disabled property to FromControl "f" is not valid -->
+    <button class="btn btn-primary" [disabled]="!f.valid">Submit</button>
+</form>

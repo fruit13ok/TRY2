@@ -1,0 +1,33 @@
+<div class="zippy">
+    <div 
+        class="zippy-heading"
+        [class.expanded]="isExpanded"
+        (click)="toggle()"
+        >
+        {{ title }}
+        <!-- the new way of fontawesome, I don't like -->
+        <!-- <fa-icon [icon]="chevron"  size="2x"></fa-icon> -->
+
+        <!-- old way of fontawesome, I like, either use class binding or ngClass -->
+        <!-- <span><i class="fas fa-chevron-up"></i></span> -->
+        <!-- <span>
+            <i 
+                class="fas" 
+                [class.fa-chevron-up]="isExpanded" 
+                [class.fa-chevron-down]="!isExpanded"
+            ></i>
+        </span> -->
+        <span>
+            <i 
+                class="fas" 
+                [ngClass]="{
+                    'fa-chevron-up': isExpanded,
+                    'fa-chevron-down': !isExpanded
+                }"
+            ></i>
+        </span>
+    </div>
+    <div *ngIf="isExpanded" class="zippy-body">
+        <ng-content></ng-content>
+    </div>
+</div>

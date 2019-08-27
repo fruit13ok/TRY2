@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
+body {
+    padding: 20px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: left;    
+}
+.textColor {
+    color: red;
+}
+/* in input field Angular added some classes for validation, .ng-touched.ng-invalid, and we need to create our class form-control */
+.form-control.ng-touched.ng-invalid {
+    border: 2px solid red;
+}

@@ -1,0 +1,14 @@
+<style>
+    div {
+        color: blue;
+    }
+</style>
+<h1>Favorite toggle star icon, passing data between components</h1>
+<!-- <span class='glyphicon glyphicon-star'></span> -->
+<!-- <fa-icon [icon]="farStar"size="5x"></fa-icon> -->
+<!-- <fa-icon [icon]="fasStar"size="6x"></fa-icon> -->
+<fa-icon [icon]="star" (click)="onClick()" size="2x"></fa-icon>
+<div>
+    <p>value from parent: {{isFavorite}}</p>
+    <p style="color:yellow;">child has value: </p>
+</div>
