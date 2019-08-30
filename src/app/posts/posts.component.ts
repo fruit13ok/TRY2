@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '../services/post.service';
+import { AppError } from '../common/app-error';
+import { NotFoundError } from '../common/not-found-error';
+import { BadRequestError } from '../common/bad-request-error';
 
 @Component({
   selector: 'app-posts',
@@ -57,6 +60,8 @@ export class PostsComponent implements OnInit{
   // since we are using fake server jsonplaceholder, it only response with ID, real server will response more,
   createPost(input: HTMLInputElement){
     let post = { title: input.value };
+    // use Optimistic update so assume response success add to array
+    this.posts.unshift(post);
     // clear input field
     input.value = '';
     // this.http.post(this.url, JSON.stringify(post))
@@ -68,10 +73,14 @@ export class PostsComponent implements OnInit{
         // Typescript will check for type, don't use "post.id", either declare like "let post: any" or add key like post['id']
         // add to front of posts array
         post['id'] = response.json().id;
-        this.posts.unshift(post);
+        // this.posts.unshift(post);
       }, 
-      (error: Response) => {
-        if(error.status === 400){
+      // (error: Response) => {
+      //   if(error.status === 400){
+      (error: AppError) => {
+        // use Optimistic update if response error remove from array to undo what was done
+        this.posts.shift();
+        if(error instanceof BadRequestError){
           alert('This post already exist');
         }else{
           // kind like htlp alert message
@@ -97,7 +106,7 @@ export class PostsComponent implements OnInit{
         console.log(response.json());
       }, 
       error => {
-        // kind like htlp alert message
+        // kind like html alert message
         alert('An unexpected error occurred');
         console.log(error);
       }
@@ -107,23 +116,33 @@ export class PostsComponent implements OnInit{
   // to delete need to identify which data to delete, so use each post's id, append after the url,
   // when cast error to type Response, code show hints,
   // handle error of data already been deleted
+  // won't see error, it is fake database
   deletePost(post){
-    // this.http.delete(this.url+'/'+post.id)
-    this.service.deletePost(post.id)
-    .subscribe(
-      response => {
-        let index = this.posts.indexOf(post);
-        this.posts.splice(index, 1);
-      }, 
-      (error: Response) => {
-        if(error.status === 404){
-          alert('This post already been deleted');
-        }else{
-          // kind like htlp alert message
-          alert('An unexpected error occurred');
-          console.log(error);
-        }
-      }
-    );
+    // // use Optimistic update so assume response success remove from array
+    // let index = this.posts.indexOf(post);
+    // this.posts.splice(index, 1);
+    // // this.http.delete(this.url+'/'+post.id)
+    // this.service.deletePost(post.id)
+    // .subscribe(
+    //   response => {
+    //     // let index = this.posts.indexOf(post);
+    //     // this.posts.splice(index, 1);
+    //   }, 
+    //   // (error: Response) => {
+    //   //   if(error.status === 404){
+    //   (error: AppError) => {
+    //     // use Optimistic update if response error add back to array to undo what was done
+    //     this.posts.splice(index, 0, post);
+    //     if(error instanceof NotFoundError){
+    //       alert('This post already been deleted');
+    //     }else{
+    //       // kind like htlp alert message
+    //       alert('An unexpected error occurred');
+    //       console.log(error);
+    //     }
+    //   }
+    // );
+
+    this.service.deletePost(post.id);
   }
 }

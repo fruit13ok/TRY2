@@ -1,4 +1,5 @@
 <h3>HTTP Services</h3>
+<h2>WARNING! the http response error handling leature is broken</h2>
 <!-- createPost(title) sending in HTMLInputElement title -->
 <input 
     #title 
@@ -11,19 +12,19 @@
         *ngFor="let post of posts"
         class="list-group-item"
     >
-    <!-- updatePost(post) sending in post object -->
-    <button 
-        (click)="updatePost(post)" 
-        class="btn btn-primary btn-sm"
-    >
-        Update
-    </button>
-    <button 
-        (click)="deletePost(post)" 
-        class="btn btn-primary btn-sm"
-    >
-        Delete
-    </button>
+        <!-- updatePost(post) sending in post object -->
+        <button 
+            (click)="updatePost(post)" 
+            class="btn btn-primary btn-sm"
+        >
+            Update
+        </button>
+        <button 
+            (click)="deletePost(post)" 
+            class="btn btn-primary btn-sm"
+        >
+            Delete
+        </button>
         {{ post.title }}
     </li>
 </ul>
